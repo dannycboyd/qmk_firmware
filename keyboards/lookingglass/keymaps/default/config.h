@@ -15,5 +15,6 @@
  */
 
 #pragma once
+#define BOOTMAGIC_KEY_BOOTLOADER KC_F7
 
 // place overrides here
