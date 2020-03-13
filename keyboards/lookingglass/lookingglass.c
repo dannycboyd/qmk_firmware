@@ -13,8 +13,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+// #define MASTER_COMPILE // comment out this line if you're targeting the right board
+#ifdef MASTER_COMPILE
+#   define BOOTMAGIC_LITE_ROW 0 // this is esc at the top left of the lhs
+#   define BOOTMAGIC_LITE_COLUMN 0
+#endif
 #include "lookingglass.h"
+
+void bootmagic_lite(void) {
+    matrix_scan();
+    wait_ms(DEBOUNCE * 2);
+    matrix_scan();
+
+#ifdef MASTER_COMPILE
+    if (matrix_get_row(BOOTMAGIC_LITE_ROW) & (1 << BOOTMAGIC_LITE_COLUMN)) {
+        bootloader_jump();
+    }
+#else
+    bootloader_jump();
+#endif
+}
+
+// void bootmagic_lite(void) {
+//     matrix_scan();
+//     wait_ms(DEBOUNCE * 2);
+//     matrix_scan();
+
+//     if (matrix_get_row(BOOTMAGIC_LITE_ROW) & (1 << BOOTMAGIC_LITE_COLUMN)) {
+//       // Jump to bootloader.
+//       bootloader_jump();
+//     }
+// }
 
 // Optional override functions below.
 // You can leave any or all of these undefined.
